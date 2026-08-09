@@ -1,7 +1,5 @@
 from flask import Blueprint, jsonify, g
 
-from extensions import db
-from models import Todo
 from schemas import TodoCreate, TodoUpdate, TodoPatch
 from validation import validate_json
 import repository
