@@ -10,7 +10,7 @@ class TodoUpdate(BaseModel):
     description: str
     completed: bool = False
 
-# class TodoPatch(BaseModel):
-#     title: str | None = None
-#     description: str | None = None
-#     completed: bool | None = None
+class TodoPatch(BaseModel):
+    title: str | None = None
+    description: str | None = None
+    completed: bool | None = None
