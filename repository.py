@@ -12,6 +12,12 @@ def _to_dict(todo: Todo) -> dict[str, Any]:
         'completed': todo.completed
     }
 
+def _get_by_id(todo_id: int) -> Todo:
+    todo = db.session.get(Todo, todo_id)
+    if todo is None:
+        raise TodoNotFound(todo_id)
+
+    return todo
 
 def create_todo(create_schema: TodoCreate) -> dict[str, Any]:
     todo = Todo(create_schema.model_dump())
@@ -21,9 +27,7 @@ def create_todo(create_schema: TodoCreate) -> dict[str, Any]:
 
 
 def update_todo(todo_id: int, update_schema: TodoUpdate) -> dict[str, Any]:
-    todo = db.session.get(Todo, todo_id)
-    if todo is None:
-        raise TodoNotFound(todo_id)
+    todo = _get_by_id(todo_id)
 
     for field, value in update_schema.model_dump().items():
         setattr(todo, field, value)
@@ -32,9 +36,7 @@ def update_todo(todo_id: int, update_schema: TodoUpdate) -> dict[str, Any]:
     return _to_dict(todo)
 
 def patch_todo(todo_id: int, update_schema: TodoPatch) -> dict[str, Any]:
-    todo = db.session.get(Todo, todo_id)
-    if todo is None:
-        raise TodoNotFound(todo_id)
+    todo = _get_by_id(todo_id)
 
     for field, value in update_schema.model_dump(exclude_unset=True).items():
         setattr(todo, field, value)
@@ -44,10 +46,7 @@ def patch_todo(todo_id: int, update_schema: TodoPatch) -> dict[str, Any]:
 
 
 def delete_todo(todo_id: int) -> None:
-    todo = db.session.get(Todo, todo_id)
-    if todo is None:
-        raise TodoNotFound(todo_id)
-
+    todo = _get_by_id(todo_id)
     db.session.delete(todo)
     db.session.commit()
 
@@ -59,9 +58,7 @@ def list_todos() -> list[dict[str, Any]]:
     ]
 
 def retrieve_todo(todo_id: int) -> Tuple[dict[str, Any], int]:
-    todo = db.session.get(Todo, todo_id)
-    if todo is None:
-        raise TodoNotFound(todo_id)
-
+    todo = _get_by_id(todo_id)
     return _to_dict(todo), 200
+
 
