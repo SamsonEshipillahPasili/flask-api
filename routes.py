@@ -1,4 +1,4 @@
-from flask import Blueprint, jsonify, g
+from flask import Blueprint, g
 
 from schemas import TodoCreate, TodoUpdate, TodoPatch
 from validation import validate_json
