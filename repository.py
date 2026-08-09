@@ -54,7 +54,11 @@ def delete_todo(todo_id: int) -> Tuple[dict[str, Any] | None, int]:
     return None, 204
 
 def list_todos() -> list[dict[str, Any]]:
-    ...
+    return [
+        {'id': todo.id, 'title': todo.title, 'description': todo.description, 'completed': todo.completed}
+        for todo in
+        Todo.query.all()
+    ]
 
 def retrieve_todo(todo_id: int) -> dict[str, Any]:
     ...

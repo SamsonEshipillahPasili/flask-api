@@ -26,12 +26,7 @@ def patch_todo(todo_id: int):
 
 @routes.route('todos', methods=['GET'])
 def list_todos():
-    todos = [
-        {'id': todo.id, 'title': todo.title, 'description': todo.description, 'completed': todo.completed}
-        for todo in
-        Todo.query.all()
-    ]
-    return jsonify(todos), 200
+    return repository.list_todos(), 200
 
 @routes.route('todos/<int:todo_id>', methods=['DELETE'])
 def delete_todo(todo_id: int):
