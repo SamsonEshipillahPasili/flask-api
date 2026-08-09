@@ -4,16 +4,14 @@ from extensions import db
 from models import Todo
 from schemas import TodoCreate, TodoUpdate, TodoPatch
 from validation import validate_json
+import repository
 
 routes = Blueprint('routes', __name__)
 
 @routes.route('todos', methods=['POST'])
 @validate_json(TodoCreate)
 def create_todo():
-    todo = Todo(**g.payload.model_dump())
-    db.session.add(todo)
-    db.session.commit()
-    return {"id": todo.id}, 201
+    return repository.create_todo(g.payload), 200
 
 @routes.route('todos/<int:todo_id>', methods=['PUT'])
 @validate_json(TodoUpdate)
