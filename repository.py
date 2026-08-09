@@ -52,7 +52,7 @@ def delete_todo(todo_id: int) -> None:
 
 def list_todos() -> list[dict[str, Any]]:
     return [
-        {'id': todo.id, 'title': todo.title, 'description': todo.description, 'completed': todo.completed}
+        _to_dict(todo)
         for todo in
         Todo.query.all()
     ]
