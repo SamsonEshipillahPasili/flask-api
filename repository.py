@@ -1,5 +1,5 @@
 from typing import Any, Tuple
-
+from errors import TodoNotFound
 from models import Todo
 from schemas import TodoCreate, TodoUpdate, TodoPatch
 from extensions import db
@@ -20,38 +20,36 @@ def create_todo(create_schema: TodoCreate) -> dict[str, Any]:
     return _to_dict(todo)
 
 
-def update_todo(todo_id: int, update_schema: TodoUpdate) -> Tuple[dict[str, Any], int]:
+def update_todo(todo_id: int, update_schema: TodoUpdate) -> dict[str, Any]:
     todo = db.session.get(Todo, todo_id)
-    # todo:- raise an Exception, let the exception handler deal with it.
     if todo is None:
-        return {"error": "Todo not found"}, 404
+        raise TodoNotFound(todo_id)
 
-    for field, value in g.payload.model_dump().items():
+    for field, value in update_schema.model_dump().items():
         setattr(todo, field, value)
 
     db.session.commit()
-    return _to_dict(todo), 200
+    return _to_dict(todo)
 
-def patch_todo(todo_id: int, update_schema: TodoPatch) -> Tuple[dict[str, Any], int]:
+def patch_todo(todo_id: int, update_schema: TodoPatch) -> dict[str, Any]:
     todo = db.session.get(Todo, todo_id)
     if todo is None:
-        return {"error": "Todo not found"}, 404
+        raise TodoNotFound(todo_id)
 
     for field, value in update_schema.model_dump(exclude_unset=True).items():
         setattr(todo, field, value)
 
     db.session.commit()
-    return _to_dict(todo), 200
+    return _to_dict(todo)
 
 
-def delete_todo(todo_id: int) -> Tuple[dict[str, Any] | None, int]:
+def delete_todo(todo_id: int) -> None:
     todo = db.session.get(Todo, todo_id)
     if todo is None:
-        return {"error": "Todo not found"}, 404
+        raise TodoNotFound(todo_id)
 
     db.session.delete(todo)
     db.session.commit()
-    return None, 204
 
 def list_todos() -> list[dict[str, Any]]:
     return [
@@ -63,7 +61,7 @@ def list_todos() -> list[dict[str, Any]]:
 def retrieve_todo(todo_id: int) -> Tuple[dict[str, Any], int]:
     todo = db.session.get(Todo, todo_id)
     if todo is None:
-        return {"error": "Todo not found"}, 404
+        raise TodoNotFound(todo_id)
 
     return _to_dict(todo), 200
 

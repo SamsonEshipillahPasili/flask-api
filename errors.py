@@ -15,5 +15,4 @@ def register_error_handlers(app):
 
     @app.errorhandler(TodoNotFound)
     def handle_todo_not_found(e: TodoNotFound):
-        return {"error": str(e)}
-    
+        return {"error": str(e)}, 404
