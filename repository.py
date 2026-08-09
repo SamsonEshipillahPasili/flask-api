@@ -44,8 +44,14 @@ def patch_todo(todo_id: int, update_schema: TodoPatch) -> Tuple[dict[str, Any], 
     return _to_dict(todo), 200
 
 
-def delete_todo(todo_id: int):
-    ...
+def delete_todo(todo_id: int) -> Tuple[dict[str, Any] | None, int]:
+    todo = db.session.get(Todo, todo_id)
+    if todo is None:
+        return {"error": "Todo not found"}, 404
+
+    db.session.delete(todo)
+    db.session.commit()
+    return None, 204
 
 def list_todos() -> list[dict[str, Any]]:
     ...
