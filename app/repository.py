@@ -1,8 +1,9 @@
 from typing import Any, Tuple
-from errors import TodoNotFound
-from models import Todo
-from schemas import TodoCreate, TodoUpdate, TodoPatch
-from extensions import db
+
+from app.errors import TodoNotFound
+from app.models import Todo
+from app.schemas import TodoCreate, TodoUpdate, TodoPatch
+from app.extensions import db
 
 def _to_dict(todo: Todo) -> dict[str, Any]:
     return {

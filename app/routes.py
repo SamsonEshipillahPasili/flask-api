@@ -1,8 +1,8 @@
 from flask import Blueprint, g
 
-from schemas import TodoCreate, TodoUpdate, TodoPatch
-from validation import validate_json
-import repository
+from app.schemas import TodoCreate, TodoUpdate, TodoPatch
+from app.validation import validate_json
+from app import repository
 
 routes = Blueprint('routes', __name__)
 

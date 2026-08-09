@@ -16,4 +16,4 @@ COPY . .
 
 ENV PATH="/app/.venv/bin:$PATH"
 
-CMD ["uv", "run", "python", "-m", "server"]
+CMD ["uv", "run", "python", "-m", "app.server"]
