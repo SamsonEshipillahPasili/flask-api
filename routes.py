@@ -16,15 +16,7 @@ def create_todo():
 @routes.route('todos/<int:todo_id>', methods=['PUT'])
 @validate_json(TodoUpdate)
 def update_todo(todo_id: int):
-    todo = db.session.get(Todo, todo_id)
-    if todo is None:
-        return {"error": "Todo not found"}, 404
-
-    for field, value in g.payload.model_dump().items():
-        setattr(todo, field, value)
-
-    db.session.commit()
-    return {"id": todo.id}, 200
+    return repository.update_todo(todo_id, g.payload), 200
 
 @routes.route('todos/<int:todo_id>', methods=['PUT'])
 @validate_json(TodoPatch)
