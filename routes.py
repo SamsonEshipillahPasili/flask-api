@@ -53,7 +53,13 @@ def list_todos():
 
 @routes.route('todos/<int:todo_id>', methods=['DELETE'])
 def delete_todo(todo_id: int):
-    ...
+    todo = db.session.get(Todo, todo_id)
+    if todo is None:
+        return {"error": "Todo not found"}, 404
+
+    db.session.delete(todo)
+    db.session.commit()
+    return None, 204
 
 @routes.route('todos/<int:id>', methods=['GET'])
 def retrieve_todo(todo_id: int):
