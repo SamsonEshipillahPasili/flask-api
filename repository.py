@@ -60,6 +60,10 @@ def list_todos() -> list[dict[str, Any]]:
         Todo.query.all()
     ]
 
-def retrieve_todo(todo_id: int) -> dict[str, Any]:
-    ...
+def retrieve_todo(todo_id: int) -> Tuple[dict[str, Any], int]:
+    todo = db.session.get(Todo, todo_id)
+    if todo is None:
+        return {"error": "Todo not found"}, 404
+
+    return _to_dict(todo), 200
 
