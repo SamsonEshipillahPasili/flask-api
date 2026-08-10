@@ -1,6 +1,8 @@
+import pytest
 from faker import Faker
 
 from app import repository
+from app.errors import TodoNotFound
 from app.extensions import db
 from app.models import Todo
 
@@ -40,3 +42,10 @@ def test_list_todos(todo):
     assert result[0]['title'] == todo.title
     assert result[0]['description'] == todo.description
     assert result[0]['completed'] == todo.completed
+
+def test_retrieve_todo_not_found():
+    # assert no todos in the database
+    assert Todo.query.count() == 0
+
+    with pytest.raises(TodoNotFound):
+        repository.retrieve_todo(1)
