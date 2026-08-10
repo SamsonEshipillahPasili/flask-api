@@ -72,7 +72,7 @@ def test_delete_todo(todo):
     repository.delete_todo(todo.id)
     assert Todo.query.count() == 0
 
-def test_update_todo_not_found(todo):
+def test_update_todo(todo):
 
     update = TodoUpdate(
         title=fake.sentence(),
