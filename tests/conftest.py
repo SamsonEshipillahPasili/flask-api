@@ -1,6 +1,7 @@
 import pytest
 from app.app_factory import create_app
 from app.extensions import db
+from app.models import Todo
 from app.schemas import TodoCreate
 import faker
 
@@ -27,3 +28,14 @@ def new_todo_schema():
         description=fake.paragraph(),
         completed=False,
     )
+
+@pytest.fixture
+def todo():
+    todo = Todo(
+        title=fake.sentence(),
+        description=fake.paragraph(),
+        completed=True
+    )
+    db.session.add(todo)
+    db.session.commit()
+    yield todo
