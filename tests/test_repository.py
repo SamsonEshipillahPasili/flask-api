@@ -3,7 +3,6 @@ from faker import Faker
 
 from app import repository
 from app.errors import TodoNotFound
-from app.extensions import db
 from app.models import Todo
 from app.schemas import TodoUpdate, TodoPatch
 
