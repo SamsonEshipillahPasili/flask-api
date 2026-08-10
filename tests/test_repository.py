@@ -5,7 +5,7 @@ from app import repository
 from app.errors import TodoNotFound
 from app.extensions import db
 from app.models import Todo
-from app.schemas import TodoUpdate
+from app.schemas import TodoUpdate, TodoPatch
 
 fake = Faker()
 
@@ -106,3 +106,30 @@ def test_update_todo(todo):
     assert db_todo.title == update.title
     assert db_todo.description == update.description
     assert db_todo.completed == update.completed
+
+def test_patch_todo_not_found():
+    assert Todo.query.count() == 0
+
+    update = TodoPatch(
+        title=fake.sentence(),
+    )
+
+    with pytest.raises(TodoNotFound):
+        repository.patch_todo(1, update)
+
+
+def test_patch_todo(todo):
+
+    patch = TodoPatch(
+        title=fake.sentence(),
+    )
+
+    api_todo = repository.patch_todo(todo.id, patch)
+
+    # assert the result matches the update
+    assert api_todo['title'] == patch.title
+
+    # assert the todo was updated in the database.
+    db_todo = Todo.query.filter_by(id=api_todo['id']).first()
+    assert db_todo is not None
+    assert db_todo.title ==patch.title
