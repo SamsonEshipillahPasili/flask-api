@@ -72,6 +72,19 @@ def test_delete_todo(todo):
     repository.delete_todo(todo.id)
     assert Todo.query.count() == 0
 
+def test_update_todo_not_found():
+    assert Todo.query.count() == 0
+
+    update = TodoUpdate(
+        title=fake.sentence(),
+        description=fake.sentence(),
+        completed=fake.boolean(),
+    )
+
+    with pytest.raises(TodoNotFound):
+        repository.update_todo(1, update)
+
+
 def test_update_todo(todo):
 
     update = TodoUpdate(
