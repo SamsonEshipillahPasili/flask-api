@@ -5,6 +5,7 @@ from app import repository
 from app.errors import TodoNotFound
 from app.extensions import db
 from app.models import Todo
+from app.schemas import TodoUpdate
 
 fake = Faker()
 
@@ -70,3 +71,25 @@ def test_delete_todo(todo):
 
     repository.delete_todo(todo.id)
     assert Todo.query.count() == 0
+
+def test_update_todo_not_found(todo):
+
+    update = TodoUpdate(
+        title=fake.sentence(),
+        description=fake.sentence(),
+        completed=fake.boolean(),
+    )
+
+    api_todo = repository.update_todo(todo.id, update)
+
+    # assert the result matches the update
+    assert api_todo['title'] == update.title
+    assert api_todo['description'] == update.description
+    assert api_todo['completed'] == update.completed
+
+    # assert the todo was updated in the database.
+    db_todo = Todo.query.filter_by(id=api_todo['id']).first()
+    assert db_todo is not None
+    assert db_todo.title == update.title
+    assert db_todo.description == update.description
+    assert db_todo.completed == update.completed
