@@ -49,3 +49,9 @@ def test_retrieve_todo_not_found():
 
     with pytest.raises(TodoNotFound):
         repository.retrieve_todo(1)
+
+def test_retrieve_todo(todo):
+    api_todo = repository.retrieve_todo(todo.id)
+    assert api_todo['title'] == todo.title
+    assert api_todo['description'] == todo.description
+    assert api_todo['completed'] == todo.completed

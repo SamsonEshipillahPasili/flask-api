@@ -58,8 +58,8 @@ def list_todos() -> list[dict[str, Any]]:
         Todo.query.all()
     ]
 
-def retrieve_todo(todo_id: int) -> Tuple[dict[str, Any], int]:
+def retrieve_todo(todo_id: int) -> dict[str, Any]:
     todo = _get_by_id(todo_id)
-    return _to_dict(todo), 200
+    return _to_dict(todo)
 
 
