@@ -62,3 +62,11 @@ def test_delete_todo_not_found():
 
     with pytest.raises(TodoNotFound):
         repository.delete_todo(1)
+
+
+def test_delete_todo(todo):
+    assert Todo.query.count() == 1
+    assert Todo.query.filter_by(id=todo.id).first() is not None
+
+    repository.delete_todo(todo.id)
+    assert Todo.query.count() == 0
