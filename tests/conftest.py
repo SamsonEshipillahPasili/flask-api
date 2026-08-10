@@ -39,3 +39,7 @@ def todo():
     db.session.add(todo)
     db.session.commit()
     yield todo
+
+@pytest.fixture
+def client(app):
+    return app.test_client()

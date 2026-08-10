@@ -9,7 +9,7 @@ routes = Blueprint('routes', __name__)
 @routes.route('todos', methods=['POST'])
 @validate_json(TodoCreate)
 def create_todo():
-    return repository.create_todo(g.payload), 200
+    return repository.create_todo(g.payload), 201
 
 @routes.route('todos/<int:todo_id>', methods=['PUT'])
 @validate_json(TodoUpdate)
