@@ -21,7 +21,7 @@ def _get_by_id(todo_id: int) -> Todo:
     return todo
 
 def create_todo(create_schema: TodoCreate) -> dict[str, Any]:
-    todo = Todo(create_schema.model_dump())
+    todo = Todo(**create_schema.model_dump())
     db.session.add(todo)
     db.session.commit()
     return _to_dict(todo)

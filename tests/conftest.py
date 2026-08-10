@@ -21,7 +21,7 @@ def app_context(app):
         yield
 
 @pytest.fixture
-def new_todo_create_schema():
+def new_todo_schema():
     yield TodoCreate(
         title=fake.sentence(),
         description=fake.paragraph(),
