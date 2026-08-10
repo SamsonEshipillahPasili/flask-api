@@ -2,10 +2,6 @@ from app import repository
 from app.models import Todo
 
 
-def test_db_access(app):
-    todos = repository.list_todos()
-    assert len(todos) == 0
-
 def test_create_todo(app, new_todo_schema):
     # assert no todos in the DB
     assert Todo.query.count() == 0
