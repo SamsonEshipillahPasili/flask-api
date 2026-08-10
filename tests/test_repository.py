@@ -55,3 +55,10 @@ def test_retrieve_todo(todo):
     assert api_todo['title'] == todo.title
     assert api_todo['description'] == todo.description
     assert api_todo['completed'] == todo.completed
+
+def test_delete_todo_not_found():
+    # assert no todos in the database
+    assert Todo.query.count() == 0
+
+    with pytest.raises(TodoNotFound):
+        repository.delete_todo(1)
