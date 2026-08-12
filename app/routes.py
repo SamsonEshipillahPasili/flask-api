@@ -16,7 +16,7 @@ def create_todo():
 def update_todo(todo_id: int):
     return repository.update_todo(todo_id, g.payload), 200
 
-@routes.route('todos/<int:todo_id>', methods=['PUT'])
+@routes.route('todos/<int:todo_id>', methods=['PATCH'])
 @validate_json(TodoPatch)
 def patch_todo(todo_id: int):
     return repository.patch_todo(todo_id, g.payload), 200

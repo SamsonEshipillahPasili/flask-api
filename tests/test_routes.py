@@ -32,3 +32,11 @@ def test_update_todo(client, todo):
         'description': payload['description'],
         'completed': payload['completed'],
     }
+
+def test_patch_todo(client, todo):
+    payload = {
+        'title': fake.sentence(),
+    }
+    response = client.patch(f'/api/todos/{todo.id}', json=payload)
+    assert response.status_code == 200
+    assert response.json['title'] == payload['title']
