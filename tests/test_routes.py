@@ -56,3 +56,14 @@ def test_list_todos(client, todo):
             'completed': todo.completed,
         }
     ]
+
+def test_retrieve_todo(client, todo):
+    response = client.get(f'/api/todos/{todo.id}')
+    assert response.status_code == 200
+    assert response.json == {
+        'id': todo.id,
+        'title': todo.title,
+        'description': todo.description,
+        'completed': todo.completed,
+    }
+

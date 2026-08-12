@@ -31,6 +31,6 @@ def delete_todo(todo_id: int):
     repository.delete_todo(todo_id)
     return '', 204
 
-@routes.route('todos/<int:id>', methods=['GET'])
+@routes.route('todos/<int:todo_id>', methods=['GET'])
 def retrieve_todo(todo_id: int):
     return repository.retrieve_todo(todo_id), 200
