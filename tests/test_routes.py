@@ -44,3 +44,15 @@ def test_patch_todo(client, todo):
 def test_delete_todo(client, todo):
     response = client.delete(f'/api/todos/{todo.id}')
     assert response.status_code == 204
+
+def test_list_todos(client, todo):
+    response = client.get('/api/todos')
+    assert response.status_code == 200
+    assert response.json == [
+        {
+            'id': todo.id,
+            'title': todo.title,
+            'description': todo.description,
+            'completed': todo.completed,
+        }
+    ]
